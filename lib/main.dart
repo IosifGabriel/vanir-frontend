@@ -13,7 +13,7 @@ class VanirApp extends StatelessWidget {
         fontFamily: "Poppins",
         primaryColor: Color(0xFF7C4DFF),
         accentColor: Color(0xFF00FFA0),
-        secondaryHeaderColor: Color(0xFFC7CCDB),
+        secondaryHeaderColor: Color(0xFFB7BED1),
         scaffoldBackgroundColor: Color(0xFFF3F5F7),
       ),
       home: HomeScreen(),
