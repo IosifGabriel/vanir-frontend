@@ -1,21 +1,33 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:vanir_app/models/transaction_model.dart';
 
 class TransactionsList extends StatelessWidget {
+  final int top;
   final List<Transaction> transactions = [
     Transaction("1", "Abernathy-Waters", 8.18, "06-Apr-2020", "RON"),
     Transaction("2", "Collier Inc", 17.28, "28-Mar-2020", "RON"),
     Transaction("3", "Towne LLC", 19.24, "26-Mar-2020", "EUR"),
-    Transaction("4", "TFunk Inc", 4.05, "18-Mar-2020", "USD")
+    Transaction("4", "TFunk Inc", 4.05, "18-Mar-2020", "USD"),
+    Transaction("5", "Metz and Sons", 13.23, "18-Mar-2020", "RON"),
+    Transaction("1", "Abernathy-Waters", 8.18, "06-Apr-2020", "RON"),
+    Transaction("2", "Collier Inc", 17.28, "28-Mar-2020", "RON"),
+    Transaction("3", "Towne LLC", 19.24, "26-Mar-2020", "EUR"),
+    Transaction("4", "TFunk Inc", 4.05, "18-Mar-2020", "USD"),
+    Transaction("5", "Metz and Sons", 13.23, "18-Mar-2020", "RON"),
   ];
+
+  TransactionsList([this.top]);
 
   @override
   Widget build(BuildContext context) {
+    print(top);
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: transactions.length,
+      itemCount:
+          top == null ? transactions.length : min(top, transactions.length),
       itemBuilder: (context, i) {
         var transaction = transactions[i];
         return Container(

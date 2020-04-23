@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vanir_app/screens/top_up_screen.dart';
+import 'package:vanir_app/screens/transactions_screen.dart';
 import 'package:vanir_app/widgets/dashboard/balance.dart';
 import 'package:vanir_app/widgets/section_title.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
@@ -50,8 +51,13 @@ class DashboardTab extends StatelessWidget {
               );
             }),
             Balance(),
-            SectionTitle("Transactions", () => print("View all")),
-            TransactionsList()
+            SectionTitle("Transactions", () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TransactionsScreen()),
+              );
+            }),
+            TransactionsList(5)
           ],
         )
       ],
