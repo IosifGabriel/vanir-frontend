@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vanir_app/tabs/dashboard_tab.dart';
 import 'package:vanir_app/tabs/cards_tab.dart';
 import 'package:vanir_app/tabs/placeholder_tab.dart';
 
@@ -11,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentTab = 0;
   final List<Widget> _tabs = [
-    PlaceholderTab("Dashboard"),
+    DashboardTab(),
     PlaceholderTab("Analytics"),
     CardsTab(),
     PlaceholderTab("Payments"),
