@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'package:vanir_app/screens/splash_screen.dart';
 
 void main() => runApp(VanirApp());
 
@@ -16,7 +16,7 @@ class VanirApp extends StatelessWidget {
         secondaryHeaderColor: Color(0xFFB7BED1),
         scaffoldBackgroundColor: Color(0xFFF3F5F7),
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
