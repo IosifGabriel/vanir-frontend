@@ -42,7 +42,7 @@ class AccountTab extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            TabTitle("Profile"),
+            TabTitle("Profile", false),
             MyListTile("Personal information", FontAwesomeIcons.idCard, (){
                   Navigator.push(
                       context,
@@ -54,11 +54,10 @@ class AccountTab extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => YourAccountDetailsScreen()));
             }),
             SizedBox(height: 20.0),
-            TabTitle("Security"),
+            TabTitle("Security", false),
             MyListTile("Change password", FontAwesomeIcons.lock),
             MyListTile("Delete account", FontAwesomeIcons.mobile),
             SettingTile("Use biometric data", FontAwesomeIcons.fingerprint)
-
           ],
         )
       ],
