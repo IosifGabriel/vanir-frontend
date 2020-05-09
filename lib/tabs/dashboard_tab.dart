@@ -50,7 +50,7 @@ class DashboardTab extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => TopUpScreen()),
               );
             }),
-            Balance(),
+            BalanceWidget(),
             SectionTitle("Transactions", () {
               Navigator.push(
                 context,
