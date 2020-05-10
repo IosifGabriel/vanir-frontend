@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vanir_app/services/user_service.dart';
 import 'package:vanir_app/widgets/custom_button.dart';
+import 'package:vanir_app/widgets/custom_dialog.dart';
+import 'package:vanir_app/widgets/error.dart';
+import 'package:vanir_app/widgets/loader.dart';
+import 'package:vanir_app/widgets/success.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 
-class TopUpScreen extends StatelessWidget {
+class TopUpScreen extends StatefulWidget {
+  @override
+  _TopUpScreenState createState() => _TopUpScreenState();
+}
+
+class _TopUpScreenState extends State<TopUpScreen> {
+  TextEditingController amountController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +31,7 @@ class TopUpScreen extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   TextField(
+                    controller: amountController,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       WhitelistingTextInputFormatter(RegExp(r"[\d.]")),
@@ -41,18 +54,21 @@ class TopUpScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id mi maximus enim semper semper.",
-                    textAlign: TextAlign.center,
-                  ),
                 ],
               ),
             ),
             Spacer(),
-            CustomButton("Confirm", () {
-              print("New card added");
-              Navigator.pop(context);
+            CustomButton("Confirm", () async {
+              var result =
+                  await _topup(context, double.parse(amountController.text));
+              if (result) {
+                Future.delayed(
+                    Duration(
+                      seconds: 2,
+                      milliseconds: 250,
+                    ),
+                    () => Navigator.pop(context));
+              }
             }),
             FlatButton(
               child: Text("Cancel"),
@@ -62,5 +78,26 @@ class TopUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> _topup(BuildContext context, double amount) async {
+    var confirmed = UserService.topup(amount);
+    showDialog(
+      context: context,
+      child: CustomDialog.fromWidget(FutureBuilder<bool>(
+        future: confirmed,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Future.delayed(Duration(seconds: 2), () => Navigator.pop(context));
+            if (snapshot.data == false) return ErrorView();
+            return SuccessView();
+          } else if (snapshot.hasError) {
+            return ErrorView();
+          }
+          return Loader();
+        },
+      )),
+    );
+    return confirmed;
   }
 }

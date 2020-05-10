@@ -1,8 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:vanir_app/models/balance_model.dart';
+import 'package:vanir_app/services/user_service.dart';
+import 'package:vanir_app/widgets/error.dart';
+import 'package:vanir_app/widgets/loader.dart';
+import 'package:vanir_app/widgets/not_found.dart';
 
-class Balance extends StatelessWidget {
+class BalanceWidget extends StatefulWidget {
+  @override
+  _BalanceWidgetState createState() => _BalanceWidgetState();
+}
+
+class _BalanceWidgetState extends State<BalanceWidget> {
+  Future<Balance> futureBalance;
+
+  @override
+  void initState() {
+    super.initState();
+    futureBalance = UserService.getBalance();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<Balance>(
+      future: futureBalance,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == null) return NotFoundView();
+          return _view(snapshot.data);
+        } else if (snapshot.hasError) {
+          return ErrorView();
+        }
+        return Loader();
+      },
+    );
+  }
+
+  Widget _view(Balance balance) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
@@ -31,14 +64,14 @@ class Balance extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text("1,675.31 RON", style: _balanceTextStyle),
+              Text('${balance.balance.toStringAsFixed(2)} ${balance.currency}', style: _balanceTextStyle),
               Divider(color: Colors.white),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("1 RON", style: _currencyTextStyle),
-                  Text("4.1 USD", style: _currencyTextStyle),
-                  Text("4.8 EUR", style: _currencyTextStyle),
+                  Text('${balance.ronRate} RON', style: _currencyTextStyle),
+                  Text('${balance.usdRate} USD', style: _currencyTextStyle),
+                  Text('${balance.eurRate} EUR', style: _currencyTextStyle),
                 ],
               ),
             ],
