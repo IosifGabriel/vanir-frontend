@@ -3,8 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
 
 class CardSettings extends StatelessWidget {
+  final int index;
+
+  CardSettings(this.index);
+
   @override
   Widget build(BuildContext context) {
+    print('settings for ' + index.toString());
     return ListView(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -80,11 +85,7 @@ class _SettingTileState extends State<SettingTile> {
           trailing: widget.onTap == null
               ? Switch(
                   value: isActive,
-                  onChanged: (value) {
-                    setState(() {
-                      isActive = value;
-                    });
-                  },
+                  onChanged: (value) => setState(() => isActive = value),
                   activeColor: Theme.of(context).primaryColor,
                 )
               : null,

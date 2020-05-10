@@ -20,16 +20,15 @@ class AddNewCard extends StatelessWidget {
               child: Container(
                 height: 240.0,
                 width: 340.0,
-                child: CardWidget(CreditCard(
-                    "", "John Doe", "XXXX XXXX XXXX XXXX", "XX/XX", "XXX")),
-              ),
-            ),
-            SizedBox(height: 40.0),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
-              child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id mi maximus enim semper semper.",
-                textAlign: TextAlign.center,
+                child: CardWidget(
+                  CreditCard(
+                    id: "",
+                    cardholderName: "John Doe",
+                    number: "XXXX XXXX XXXX XXXX",
+                    expirationDate: "XX/XX",
+                    cvv: "XXX",
+                  ),
+                ),
               ),
             ),
             Spacer(),
