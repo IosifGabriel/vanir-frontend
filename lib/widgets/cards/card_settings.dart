@@ -1,53 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vanir_app/services/cards_service.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
+import 'package:vanir_app/widgets/error.dart';
+import 'package:vanir_app/widgets/loader.dart';
+import 'package:vanir_app/widgets/success.dart';
 
 class CardSettings extends StatelessWidget {
-  final int index;
+  final String cardId;
 
-  CardSettings(this.index);
+  CardSettings(this.cardId);
 
   @override
   Widget build(BuildContext context) {
-    print('settings for ' + index.toString());
     return ListView(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       children: <Widget>[
-        SettingTile("Freeze card", FontAwesomeIcons.shieldAlt),
-        SettingTile("Contactless payments", FontAwesomeIcons.wifi),
-        SettingTile("ATM withdrawls", FontAwesomeIcons.print),
-        SettingTile("Online transactions", FontAwesomeIcons.globe),
-        SettingTile("Remove card", FontAwesomeIcons.trash, () {
+        SettingTile("Freeze card", FontAwesomeIcons.shieldAlt, false),
+        SettingTile("Contactless payments", FontAwesomeIcons.wifi, true),
+        SettingTile("ATM withdrawls", FontAwesomeIcons.print, false),
+        SettingTile("Online transactions", FontAwesomeIcons.globe, true),
+        SettingTile("Remove card", FontAwesomeIcons.trash, true, () {
           showDialog(
             context: context,
             child: CustomDialog(
               "Remove card",
               "Are you sure you want to remove this card?",
               "Remove",
-              () => print("Card removed"),
+              () async {
+                var result = await _deleteCard(context, cardId);
+                if (result) {
+                  Future.delayed(
+                      Duration(
+                        seconds: 2,
+                        milliseconds: 250,
+                      ),
+                      () => Navigator.pop(context));
+                }
+              },
             ),
           );
         }),
       ],
     );
   }
+
+  Future<bool> _deleteCard(BuildContext context, String cardId) async {
+    var confirmed = CardsService.deleteCard(cardId);
+    showDialog(
+      context: context,
+      child: CustomDialog.fromWidget(FutureBuilder<bool>(
+        future: confirmed,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Future.delayed(Duration(seconds: 2), () => Navigator.pop(context));
+            if (snapshot.data == false) return ErrorView();
+            return SuccessView();
+          } else if (snapshot.hasError) {
+            return ErrorView();
+          }
+          return Loader();
+        },
+      )),
+    );
+    return confirmed;
+  }
 }
 
 class SettingTile extends StatefulWidget {
   final String name;
   final IconData icon;
+  final bool defaultValue;
   final Function onTap;
 
-  SettingTile(this.name, this.icon, [this.onTap]);
+  SettingTile(this.name, this.icon, [this.defaultValue, this.onTap]);
 
   @override
   _SettingTileState createState() => _SettingTileState();
 }
 
 class _SettingTileState extends State<SettingTile> {
-  bool isActive = true;
+  bool isActive;
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    isActive = widget.defaultValue;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:vanir_app/widgets/cards/card_widget.dart';
 
 class CardsCarousel extends StatelessWidget {
   final List<CreditCard> cards;
-  final Function(int) onPageChanged;
+  final Function(String) onPageChanged;
 
   CardsCarousel(this.cards, this.onPageChanged);
 
@@ -23,7 +23,9 @@ class CardsCarousel extends StatelessWidget {
       enableInfiniteScroll: false,
       initialPage: 0,
       scrollDirection: Axis.horizontal,
-      onPageChanged: onPageChanged,
+      onPageChanged: (pageNum) {
+        onPageChanged(cards[pageNum].id);
+      },
       viewportFraction: 0.8,
       enlargeCenterPage: true,
     );

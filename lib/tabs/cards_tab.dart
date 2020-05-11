@@ -17,13 +17,13 @@ class CardsTab extends StatefulWidget {
 }
 
 class _CardsTabState extends State<CardsTab> {
-  int cardIndex;
+  String cardId;
   Future<List<CreditCard>> futureCards;
 
   @override
   void initState() {
     super.initState();
-    cardIndex = 0;
+    cardId = "";
     futureCards = CardsService.getCards();
   }
 
@@ -57,10 +57,10 @@ class _CardsTabState extends State<CardsTab> {
             }),
             CardsCarousel(
               cards,
-              (pageNumber) => setState(() => cardIndex = pageNumber),
+              (id) => setState(() => cardId = id),
             ),
             SectionTitle("Card settings", () => print("View all")),
-            CardSettings(cardIndex),
+            CardSettings(cardId),
           ],
         )
       ],
