@@ -19,4 +19,14 @@ class CardsService {
     });
     return result;
   }
+
+  static Future<bool> addCard() async {
+    var result = false;
+    await http.post('$_url/').then((response) {
+      if (response.statusCode == 200) result = true;
+    }).catchError((e) {
+      print('Topup error: $e');
+    });
+    return result;
+  }
 }
