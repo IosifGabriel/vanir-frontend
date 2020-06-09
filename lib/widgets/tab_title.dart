@@ -6,8 +6,9 @@ class TabTitle extends StatelessWidget {
   final IconData icon;
   final Function onTap;
   final bool canGoBack;
+  final bool inverted;
 
-  TabTitle(this.title, this.canGoBack, [this.icon, this.onTap]);
+  TabTitle(this.title, this.canGoBack, {this.icon, this.onTap, this.inverted = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class TabTitle extends StatelessWidget {
       title: Text(
         title,
         style: TextStyle(
+          color: inverted ? Colors.white : Colors.black,
           fontSize: 28.0,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.0,
