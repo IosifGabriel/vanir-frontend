@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vanir_app/config.dart';
 import 'package:vanir_app/models/balance_model.dart';
 import 'dart:convert';
-
 import 'package:vanir_app/models/user_model.dart';
 
 class UserService {
@@ -41,12 +40,30 @@ class UserService {
               'password': password,
             }))
         .then((response) {
-      print(response.body);
       if (response.statusCode == 200) {
         id = json.decode(response.body)["id"];
       }
     }).catchError((e) {
       print('Login error: $e');
+    });
+    return id;
+  }
+
+  static Future<String> register(String body) async {
+    String id = null;
+    await http
+        .post('$_url/register',
+            headers: {
+              "accept": "application/json",
+              "content-type": "application/json"
+            },
+            body: body)
+        .then((response) {
+      if (response.statusCode == 200) {
+        id = json.decode(response.body)["id"];
+      }
+    }).catchError((e) {
+      print('Register error: $e');
     });
     return id;
   }
