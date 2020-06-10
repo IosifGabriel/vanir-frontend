@@ -49,7 +49,7 @@ class _CardsTabState extends State<CardsTab> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            TabTitle("Your cards", false, FontAwesomeIcons.plus, () {
+            TabTitle("Your cards", false, icon: FontAwesomeIcons.plus, onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AddNewCard()),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vanir_app/screens/home_screen.dart';
+import 'package:vanir_app/screens/wrapper.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => Wrapper()),
         );
       },
     );

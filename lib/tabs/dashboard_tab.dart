@@ -44,7 +44,7 @@ class DashboardTab extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
-            TabTitle("My balance", false, FontAwesomeIcons.plus, () {
+            TabTitle("My balance", false, icon: FontAwesomeIcons.plus, onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TopUpScreen()),
