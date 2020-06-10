@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:vanir_app/widgets/tab_title.dart';
 
 class YourProfileScreen extends StatelessWidget {
   @override
@@ -8,6 +8,7 @@ class YourProfileScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+          TabTitle("Personal details", true),
           Container(
             padding: const EdgeInsets.only(
               top: 32.0,
@@ -17,36 +18,42 @@ class YourProfileScreen extends StatelessWidget {
               alignment: Alignment.center,
               children: <Widget>[
                 Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 6.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0.0, 4.0),
+                        blurRadius: 6.0,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: 60.0,
-                backgroundImage: NetworkImage(
-                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=750&amp;q=80%20750w"),
-                backgroundColor: Colors.blue,
-              ),
-            ),
-                Positioned(
-                  bottom: 0.0,
-                  right: 0.0,
-                  child: FloatingActionButton(
-                      mini: true,
-                      child: Icon(Icons.camera_alt),
-                      onPressed: () {}),
-                )
+                  child: Stack(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 60.0,
+                        backgroundImage: NetworkImage(
+                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=750&amp;q=80%20750w"),
+                        backgroundColor: Colors.blue,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 100.0, left: 80.0),
+                                  child: Align(
+                    child: FloatingActionButton(
+                        mini: true,
+                        child: Icon(Icons.camera_alt),
+                        onPressed: () {}),
+                  ),
+                ),
               ],
             ),
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             leading: Icon(
               FontAwesomeIcons.idCard,
             ),
@@ -75,7 +82,8 @@ class YourProfileScreen extends StatelessWidget {
             indent: 72.0,
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             leading: Icon(
               FontAwesomeIcons.houseUser,
             ),
@@ -86,11 +94,13 @@ class YourProfileScreen extends StatelessWidget {
                 fontSize: 15.0,
               ),
             ),
-            subtitle: Text('10 Downing Street, London, United Kingdom',
+            subtitle: Text(
+              '10 Downing Street, London, United Kingdom',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16.0,
-              ),),
+              ),
+            ),
             trailing: Icon(Icons.mode_edit),
             onTap: () {},
           ),
@@ -99,7 +109,8 @@ class YourProfileScreen extends StatelessWidget {
             indent: 72.0,
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             leading: Icon(
               FontAwesomeIcons.phone,
             ),
@@ -120,12 +131,13 @@ class YourProfileScreen extends StatelessWidget {
             trailing: Icon(Icons.mode_edit),
             onTap: () {},
           ),
-            Divider(
+          Divider(
             height: 0.0,
             indent: 72.0,
           ),
           ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             leading: Icon(
               FontAwesomeIcons.mailBulk,
             ),

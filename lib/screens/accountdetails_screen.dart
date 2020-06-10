@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vanir_app/widgets/tab_title.dart';
 
 
 class YourAccountDetailsScreen extends StatelessWidget {
@@ -8,6 +9,7 @@ class YourAccountDetailsScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+          TabTitle("Account details", true),
           Divider(
             height: 300.0,
             indent: 72.0,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vanir_app/models/user_model.dart';
 import 'package:vanir_app/screens/splash_screen.dart';
-import 'package:vanir_app/services/auth_service.dart';
+import 'package:vanir_app/services/user_service.dart';
 
 void main() => runApp(VanirApp());
 
@@ -10,7 +10,7 @@ class VanirApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
-      value: AuthService.user,
+      value: UserService.user,
       child: MaterialApp(
         title: "Vanir - Mobile banking",
         debugShowCheckedModeBanner: false,
