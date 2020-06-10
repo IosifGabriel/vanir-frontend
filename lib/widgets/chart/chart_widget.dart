@@ -1,49 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'dart:math' as math;
+import 'package:vanir_app/models/transaction_model.dart';
+import 'package:vanir_app/services/transactions_service.dart';
+import 'package:vanir_app/widgets/error.dart';
+import 'package:vanir_app/widgets/loader.dart';
+import 'package:vanir_app/widgets/not_found.dart';
 
-math.Random random = new math.Random();
-
-List<double> _generateRandomData(int count) {
-  List<double> result = <double>[];
-  for (int i = 0; i < count; i++) {
-    result.add(random.nextDouble() * 100);
-  }
-  return result;
+class AnalyticsChart extends StatefulWidget {
+  @override
+  _AnalyticsChartState createState() => _AnalyticsChartState();
 }
 
-/* TO DO: implement sync with database to get the data for chart */
-
-class AnalyticsData {
-  final DateTime date;
-  final double amount;
-
-  AnalyticsData(this.date, this.amount);
-}
-
-class AnalyticsChart extends StatelessWidget{
-
-  var data = _generateRandomData(100);
+class _AnalyticsChartState extends State<AnalyticsChart> {
+  Future<List<Transaction>> futureTransactions;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: new Center(
-          child: new Container(
-            width: 500.0,
-            height: 800.0,
-            child: new Sparkline(
-              data: data,
-              lineColor: Colors.lightGreen[500],
-              fillMode: FillMode.below,
-              fillColor: Colors.lightGreen[200],
-              pointsMode: PointsMode.all,
-              pointSize: 5.0,
-              pointColor: Colors.amber,
-            ),
-          ),
-        ),
-      );
+  void initState() {
+    super.initState();
+    futureTransactions = TransactionsService.getTransactions();
   }
 
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Transaction>>(
+      future: futureTransactions,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data == null) return NotFoundView();
+          var data = snapshot.data.map((t) => t.amount).toList();
+          return _view(data);
+        } else if (snapshot.hasError) {
+          return ErrorView();
+        }
+        return Loader();
+      },
+    );
+  }
+
+  Widget _view(List<double> data) {
+    return Container(
+      height: 200.0,
+      child: Sparkline(
+        data: data,
+        lineWidth: 2.0,
+        lineColor: Theme.of(context).primaryColor,
+        pointsMode: PointsMode.all,
+        pointSize: 8.0,
+        pointColor: Theme.of(context).primaryColor,
+        fillMode: FillMode.below,
+        fillGradient: new LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).accentColor.withOpacity(0.5),
+            Theme.of(context).scaffoldBackgroundColor
+          ],
+        ),
+      ),
+    );
+  }
 }
