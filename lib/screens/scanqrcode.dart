@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vanir_app/widgets/custom_button.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -22,23 +23,28 @@ class _ScanState extends State<ScanScreen> {
     return Scaffold(
         appBar: new AppBar(
           title: new Text('QR Code Scanner'),
+          flexibleSpace:  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: <Color>[
+                          Color(0xFF7C4DFF),
+                          Color(0xFF00FFA0)
+                        ]
+                      )
+                    )
+                    )
         ),
         body: new Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+           // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: RaisedButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    splashColor: Colors.blueGrey,
-                    onPressed: scan,
-                    child: const Text('START CAMERA SCAN')
-                ),
-              )
-              ,
+                padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 100.0),
+                child: CustomButton('START CAMERA SCAN', scan)
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(barcode, textAlign: TextAlign.center,),
@@ -51,7 +57,8 @@ class _ScanState extends State<ScanScreen> {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan().toString();
+      var scanResult = await BarcodeScanner.scan();
+      String barcode = scanResult.toString();
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {

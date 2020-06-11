@@ -24,16 +24,21 @@ class GenerateScreenState extends State<GenerateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('QR Code Generator'),
-        backgroundColor: Colors.deepOrange,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: _captureAndSharePng,
-          )
-        ],
-      ),
+     appBar: new AppBar(
+          title: new Text('QR Code Generator'),
+          flexibleSpace:  Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: <Color>[
+                          Color(0xFF7C4DFF),
+                          Color(0xFF00FFA0)
+                        ]
+                      )
+                    )
+                    )
+        ),
       body: _contentWidget(),
     );
   }

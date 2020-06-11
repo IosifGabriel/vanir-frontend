@@ -5,7 +5,7 @@ import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
 import 'package:vanir_app/screens/generateqrcode.dart';
 import 'package:vanir_app/screens/scanqrcode.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
-
+import 'package:vanir_app/widgets/custom_button.dart';
 
 
 
@@ -28,9 +28,7 @@ class PaymentsTabState extends State<PaymentsTab> {
       children:<Widget>[
         Column(children: <Widget>[
           TabTitle("OCR Reading", false),
-          new RaisedButton(onPressed: _read,
-          child: new Text('Start Scanning')
-          ),
+          CustomButton("Start scanning", _read),
           TabTitle("QR CODE", false),
             MyListTile("QR GENERATE", FontAwesomeIcons.qrcode, (){
                   Navigator.push(
