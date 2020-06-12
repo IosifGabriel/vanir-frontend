@@ -5,7 +5,7 @@ import 'package:vanir_app/widgets/cards/card_widget.dart';
 
 class CardsCarousel extends StatelessWidget {
   final List<CreditCard> cards;
-  final Function(String) onPageChanged;
+  final Function(int) onPageChanged;
 
   CardsCarousel(this.cards, this.onPageChanged);
 

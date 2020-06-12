@@ -27,7 +27,7 @@ class AddNewCard extends StatelessWidget {
                 width: 340.0,
                 child: CardWidget(
                   CreditCard(
-                    id: "",
+                    id: 0,
                     cardholderName: "John Doe",
                     number: "XXXX XXXX XXXX XXXX",
                     expirationDate: "XX/XX",

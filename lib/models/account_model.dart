@@ -1,5 +1,5 @@
 class Account {
-  final String id;
+  final int id;
   final String user_id;
   final double balance;
   final String currency;

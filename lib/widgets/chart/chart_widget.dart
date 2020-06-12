@@ -26,8 +26,8 @@ class _AnalyticsChartState extends State<AnalyticsChart> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == null) return NotFoundView();
-          var data = snapshot.data.map((t) => t.amount).toList();
-          return _view(data);
+          var data = _getData(snapshot.data);
+          return data.length > 1 ? _view(data) : Container();
         } else if (snapshot.hasError) {
           return ErrorView();
         }
@@ -57,5 +57,14 @@ class _AnalyticsChartState extends State<AnalyticsChart> {
         ),
       ),
     );
+  }
+
+  List<double> _getData(List<Transaction> transactions) {
+    var data = List<double>();
+    data.add(0);
+    for (int i = transactions.length - 1; i >= 0; i--) {
+      data.add(transactions[i].amount+data[data.length-1]);
+    }
+    return data;
   }
 }

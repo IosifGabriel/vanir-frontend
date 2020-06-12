@@ -7,7 +7,7 @@ import 'package:vanir_app/widgets/loader.dart';
 import 'package:vanir_app/widgets/success.dart';
 
 class CardSettings extends StatelessWidget {
-  final String cardId;
+  final int cardId;
 
   CardSettings(this.cardId);
 
@@ -47,7 +47,7 @@ class CardSettings extends StatelessWidget {
     );
   }
 
-  Future<bool> _deleteCard(BuildContext context, String cardId) async {
+  Future<bool> _deleteCard(BuildContext context, int cardId) async {
     var confirmed = CardsService.deleteCard(cardId);
     showDialog(
       context: context,

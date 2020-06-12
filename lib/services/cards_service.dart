@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:vanir_app/app_context.dart';
 import 'package:vanir_app/config.dart';
 import 'package:vanir_app/models/card_model.dart';
 import 'dart:convert';
@@ -9,7 +10,10 @@ class CardsService {
 
   static Future<List<CreditCard>> getCards() async {
     var result = new List<CreditCard>();
-    await http.get('$_url/').then((response) {
+    var id = await AppContext.loggedUserId();
+    await http.get('$_url/',headers: {
+      "id": id
+    }).then((response) {
       if (response.statusCode == 200)
         result = (json.decode(response.body) as List)
             .map((model) => CreditCard.fromJson(model))
@@ -22,7 +26,10 @@ class CardsService {
 
   static Future<bool> addCard() async {
     var result = false;
-    await http.post('$_url/').then((response) {
+    var id = await AppContext.loggedUserId();
+    await http.post('$_url/', headers: {
+      "id": id
+    }).then((response) {
       if (response.statusCode == 200) result = true;
     }).catchError((e) {
       print('Add card error: $e');
@@ -30,13 +37,15 @@ class CardsService {
     return result;
   }
 
-  static Future<bool> deleteCard(String cardId) async {
+  static Future<bool> deleteCard(int cardId) async {
     var result = false;
+    var id = await AppContext.loggedUserId();
     await http.delete(
       '$_url/$cardId',
       headers: {
         "accept": "application/json",
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "id": id
       },
     ).then((response) {
       if (response.statusCode == 200) result = true;

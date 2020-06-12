@@ -1,5 +1,5 @@
 class CreditCard {
-  final String id;
+  final int id;
   final String cardholderName;
   final String number;
   final String expirationDate;

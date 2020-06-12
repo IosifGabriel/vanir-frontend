@@ -1,3 +1,3 @@
 class Config {
-  static String apiBaseUrl = "https://vanir-test.herokuapp.com/api";
+  static String apiBaseUrl = "https://api-vanir.herokuapp.com/";
 }

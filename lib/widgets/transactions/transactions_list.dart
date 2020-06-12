@@ -55,36 +55,20 @@ class _TransactionsListState extends State<TransactionsList> {
           margin: EdgeInsets.symmetric(vertical: 2.0),
           child: ListTile(
             title: Text(
-              transaction.recipient,
+              transaction.recipient.toString(),
               style: TextStyle(fontSize: 16.0, letterSpacing: 0.6),
             ),
             subtitle: Text(
               transaction.date,
               style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w300),
             ),
-            leading: Container(
-              height: 40.0,
-              width: 40.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).accentColor
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  transaction.recipient.toUpperCase().substring(0, 2),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+            leading: CircleAvatar(
+              radius: 40.0,
+              backgroundImage: NetworkImage(transaction.recipientAvatar),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             trailing: Text(
-              "-${transaction.amount.toStringAsFixed(2)} ${transaction.currency}",
+              "${transaction.amount.toStringAsFixed(2)} ${transaction.currency}",
               style: TextStyle(fontSize: 16.0, letterSpacing: 1.0),
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vanir_app/screens/accountdetails_screen.dart';
 import 'package:vanir_app/screens/wrapper.dart';
+import 'package:vanir_app/widgets/account/avatar.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
 import 'package:vanir_app/widgets/section_title.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
@@ -17,36 +18,10 @@ class AccountTab extends StatelessWidget {
       children: <Widget>[
         Column(
           children: <Widget>[
+            SizedBox(height: 20.0),
+            Avatar(),
+            SizedBox(height: 20.0),
             TabTitle("Profile", false),
-            SizedBox(height: 20.0),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 6.0,
-                  ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: 60.0,
-                backgroundImage: NetworkImage(
-                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=750&amp;q=80%20750w"),
-                backgroundColor: Colors.blue,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              "John Doe",
-              style: TextStyle(
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
-              ),
-            ),
-            SizedBox(height: 20.0),
             MyListTile("Personal information", FontAwesomeIcons.idCard, () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => YourProfileScreen()));

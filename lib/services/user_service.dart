@@ -1,12 +1,12 @@
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vanir_app/app_context.dart';
 import 'package:vanir_app/config.dart';
 import 'package:vanir_app/models/balance_model.dart';
 import 'dart:convert';
 import 'package:vanir_app/models/user_model.dart';
 
 class UserService {
-  static String _resource = 'user';
+  static String _resource = 'users';
   static String _url = Config.apiBaseUrl + '/' + _resource;
 
   static Stream<User> get user {
@@ -14,11 +14,9 @@ class UserService {
   }
 
   static Future<User> getUser() async {
-    var prefs = await SharedPreferences.getInstance();
-    var loggedUserId = prefs.getString("loggedUserId") ?? "";
-
     var result = new User();
-    await http.get('$_url/$loggedUserId').then((response) {
+    var id = await AppContext.loggedUserId();
+    await http.get('$_url/$id').then((response) {
       if (response.statusCode == 200)
         result = User.fromJson(json.decode(response.body));
     }).catchError((e) {
@@ -70,7 +68,10 @@ class UserService {
 
   static Future<Balance> getBalance() async {
     var result = new Balance();
-    await http.get('$_url/balance').then((response) {
+    var id = await AppContext.loggedUserId();
+    await http.get('$_url/balance', headers: {
+      "id": id
+    }).then((response) {
       if (response.statusCode == 200)
         result = Balance.fromJson(json.decode(response.body));
     }).catchError((e) {
@@ -81,15 +82,15 @@ class UserService {
 
   static Future<bool> topup(double amount) async {
     var result = false;
+    var id = await AppContext.loggedUserId();
     await http
         .post('$_url/balance',
             headers: {
               "accept": "application/json",
-              "content-type": "application/json"
+              "content-type": "application/json",
+              "id": id
             },
-            body: jsonEncode(<String, dynamic>{
-              'amount': amount,
-            }))
+            body: amount.toString())
         .then((response) {
       if (response.statusCode == 200) result = true;
     }).catchError((e) {

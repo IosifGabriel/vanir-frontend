@@ -17,13 +17,13 @@ class CardsTab extends StatefulWidget {
 }
 
 class _CardsTabState extends State<CardsTab> {
-  String cardId;
+  int cardId;
   Future<List<CreditCard>> futureCards;
 
   @override
   void initState() {
     super.initState();
-    cardId = "";
+    cardId = 0;
     futureCards = CardsService.getCards();
   }
 
