@@ -59,7 +59,7 @@ class _CardsTabState extends State<CardsTab> {
               cards,
               (id) => setState(() => cardId = id),
             ),
-            SectionTitle("Card settings", () => print("View all")),
+            SectionTitle("Card settings"),
             CardSettings(cardId),
           ],
         )

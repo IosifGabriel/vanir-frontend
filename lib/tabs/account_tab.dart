@@ -33,7 +33,7 @@ class AccountTab extends StatelessWidget {
                       builder: (context) => YourAccountDetailsScreen()));
             }),
             SizedBox(height: 20.0),
-            SectionTitle("Security", () => print("View all")),
+            SectionTitle("Security"),
             MyListTile("Change password", FontAwesomeIcons.lock),
             MyListTile("Delete account", FontAwesomeIcons.mobile),
             SettingTile(

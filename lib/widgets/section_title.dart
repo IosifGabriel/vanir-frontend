@@ -4,7 +4,7 @@ class SectionTitle extends StatelessWidget {
   final String title;
   final Function onExpand;
 
-  SectionTitle(this.title, this.onExpand);
+  SectionTitle(this.title, {this.onExpand});
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +22,20 @@ class SectionTitle extends StatelessWidget {
               letterSpacing: 1.2,
             ),
           ),
-          GestureDetector(
-            onTap: onExpand,
-            child: Text(
-              "View All",
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
-              ),
-            ),
-          ),
+          onExpand != null
+              ? GestureDetector(
+                  onTap: onExpand,
+                  child: Text(
+                    "View All",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                )
+              : SizedBox()
         ],
       ),
     );

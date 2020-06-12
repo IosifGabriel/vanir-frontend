@@ -17,7 +17,7 @@ class AnalyticsTab extends StatelessWidget {
             SizedBox(height: 10.0),
             AnalyticsChart(),
             SizedBox(height: 10.0),
-            SectionTitle("Transactions", () {
+            SectionTitle("Transactions", onExpand: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TransactionsScreen()),

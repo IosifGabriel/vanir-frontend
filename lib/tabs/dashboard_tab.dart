@@ -26,7 +26,7 @@ class DashboardTab extends StatelessWidget {
               );
             }),
             BalanceWidget(),
-            SectionTitle("Transactions", () {
+            SectionTitle("Transactions", onExpand: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TransactionsScreen()),

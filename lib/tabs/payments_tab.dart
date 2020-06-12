@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
+import 'package:vanir_app/widgets/account/avatar.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
+import 'package:vanir_app/widgets/payments/qr_code_widget.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 import 'package:vanir_app/widgets/custom_button.dart';
-import 'package:vanir_app/widgets/generateqrcodewidget.dart';
 
 class PaymentsTab extends StatefulWidget {
   @override
@@ -15,81 +13,45 @@ class PaymentsTab extends StatefulWidget {
 }
 
 class PaymentsTabState extends State<PaymentsTab> {
-  int _cameraOcr = FlutterMobileVision.CAMERA_BACK;
-  String _textValue = "  ";
-  String barcode = "";
-
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        padding: EdgeInsets.symmetric(vertical: 50.0),
-        children: <Widget>[
-          Column(children: <Widget>[
-            TabTitle("Scan your receipt", false),
-            CustomButton("Start scanning", _read),
-            TabTitle("QR CODE", false),
-            GenerateQRWidget(),
-            CustomButton("Scan qr code", scan2)
-          ])
-        ]);
+    return ListView(children: <Widget>[
+      Column(children: <Widget>[
+        TabTitle("Pay", false),
+        Avatar(),
+        SizedBox(height: 40.0),
+        QRCodeWidget(),
+        SizedBox(height: 40.0),
+        Text("Make a payment"),
+        SizedBox(height: 20.0),
+        CustomButton("Scan a QR code and pay", _scanQRCode),
+      ])
+    ]);
   }
 
-  Future<Null> _read() async {
-    List<OcrText> texts = [];
-    try {
-      texts = await FlutterMobileVision.read(
-        camera: _cameraOcr,
-        waitTap: true,
-      );
-
-      setState(() {
-        _textValue = texts[0].value;
-      });
-    } on Exception {
-      texts.add(new OcrText('Failed to recognize text.'));
-    }
-  }
-
-  Future scan2() async {
+  Future _scanQRCode() async {
     try {
       var scanResult = await BarcodeScanner.scan();
-      String barcode = scanResult.rawContent.toString();
-      showDialog(
-        context: context,
-        child: CustomDialog.fromWidget(_payDialog(barcode)),
-      );
-      setState(() => this.barcode = barcode);
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
-        setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
-        });
-      } else {
-        setState(() => this.barcode = 'Unknown error: $e');
-      }
-    } on FormatException {
-      setState(() => this.barcode =
-          'null (User returned using the "back"-button before scanning anything. Result)');
+      var scanContent = scanResult.rawContent;
+      if (scanContent != "")
+        showDialog(
+          context: context,
+          child: CustomDialog.fromWidget(_payDialog(scanContent)),
+        );
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      print("Scan QR code error: $e");
     }
   }
 
-  Widget _payDialog(String barcode) {
+  Widget _payDialog(String userId) {
     return Column(
       children: <Widget>[
-        Text(
-          "Pay",
-          style: TextStyle(fontSize: 20.0),
-        ),
+        Text("Pay", style: TextStyle(fontSize: 20.0)),
         SizedBox(height: 10.0),
-        Text(
-          barcode,
-          style: TextStyle(fontSize: 16.0),
-        ),
+        Text(userId, style: TextStyle(fontSize: 16.0)),
         SizedBox(height: 20.0),
         CustomButton(
-          "\t\tPay\t\t",
+          "Confirm payment",
           () {
             print("TODO pay");
           },
