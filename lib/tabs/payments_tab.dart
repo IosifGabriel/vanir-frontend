@@ -1,51 +1,38 @@
 import 'dart:async';
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
-import 'package:vanir_app/screens/generateqrcode.dart';
-import 'package:vanir_app/screens/scanqrcode.dart';
+import 'package:vanir_app/widgets/custom_dialog.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 import 'package:vanir_app/widgets/custom_button.dart';
+import 'package:vanir_app/widgets/generateqrcodewidget.dart';
 
-
-
-class PaymentsTab extends StatefulWidget{
+class PaymentsTab extends StatefulWidget {
   @override
-  PaymentsTabState createState() => PaymentsTabState(); 
+  PaymentsTabState createState() => PaymentsTabState();
 }
-
-
 
 class PaymentsTabState extends State<PaymentsTab> {
   int _cameraOcr = FlutterMobileVision.CAMERA_BACK;
   String _textValue = "  ";
+  String barcode = "";
 
   @override
-  Widget build(BuildContext context) 
-  {
+  Widget build(BuildContext context) {
     return ListView(
-      padding:EdgeInsets.symmetric(vertical:50.0),
-      children:<Widget>[
-        Column(children: <Widget>[
-          TabTitle("OCR Reading", false),
-          CustomButton("Start scanning", _read),
-          TabTitle("QR CODE", false),
-            MyListTile("QR GENERATE", FontAwesomeIcons.qrcode, (){
-                  Navigator.push(
-                      context,
-                    MaterialPageRoute(builder: (context) => GenerateScreen()));
-            }),
-              MyListTile("QR SCAN", FontAwesomeIcons.qrcode, (){
-                  Navigator.push(
-                      context,
-                    MaterialPageRoute(builder: (context) => ScanScreen()));
-            })
-        ]
-       )
-      ]
-    );
+        padding: EdgeInsets.symmetric(vertical: 50.0),
+        children: <Widget>[
+          Column(children: <Widget>[
+            TabTitle("Scan your receipt", false),
+            CustomButton("Start scanning", _read),
+            TabTitle("QR CODE", false),
+            GenerateQRWidget(),
+            CustomButton("Scan qr code", scan2)
+          ])
+        ]);
   }
-
 
   Future<Null> _read() async {
     List<OcrText> texts = [];
@@ -63,57 +50,55 @@ class PaymentsTabState extends State<PaymentsTab> {
     }
   }
 
-}
+  Future scan2() async {
+    try {
+      var scanResult = await BarcodeScanner.scan();
+      String barcode = scanResult.rawContent.toString();
+      showDialog(
+        context: context,
+        child: CustomDialog.fromWidget(_payDialog(barcode)),
+      );
+      setState(() => this.barcode = barcode);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        setState(() {
+          this.barcode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.barcode = 'Unknown error: $e');
+      }
+    } on FormatException {
+      setState(() => this.barcode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this.barcode = 'Unknown error: $e');
+    }
+  }
 
-
-class MyListTile extends StatefulWidget {
-  final String name;
-  final IconData icon;
-  final Function onTap;
-
-  MyListTile(this.name, this.icon, [this.onTap]);
-
-  @override
-  _ListTileState createState() => _ListTileState();
-}
-
-class _ListTileState extends State<MyListTile> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-        child: ListTile(
-          title: Text(
-            widget.name,
-            style: TextStyle(fontSize: 16.0, letterSpacing: 0.6),
-          ),
-          leading: Container(
-            height: 40.0,
-            width: 40.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).accentColor
-                ],
-              ),
-            ),
-            child: Center(
-              child: FaIcon(
-                widget.icon,
-                size: 20.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
+  Widget _payDialog(String barcode) {
+    return Column(
+      children: <Widget>[
+        Text(
+          "Pay",
+          style: TextStyle(fontSize: 20.0),
         ),
-      ),
+        SizedBox(height: 10.0),
+        Text(
+          barcode,
+          style: TextStyle(fontSize: 16.0),
+        ),
+        SizedBox(height: 20.0),
+        CustomButton(
+          "\t\tPay\t\t",
+          () {
+            print("TODO pay");
+          },
+        ),
+        FlatButton(
+          child: Text("Cancel"),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
     );
   }
 }
-
