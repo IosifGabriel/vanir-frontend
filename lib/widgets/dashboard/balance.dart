@@ -69,7 +69,6 @@ class _BalanceWidgetState extends State<BalanceWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('${balance.ronRate} RON', style: _currencyTextStyle),
                   Text('${balance.usdRate} USD', style: _currencyTextStyle),
                   Text('${balance.eurRate} EUR', style: _currencyTextStyle),
                 ],
