@@ -24,13 +24,12 @@ class AccountTab extends StatelessWidget {
             TabTitle("Profile", false),
             MyListTile("Personal information", FontAwesomeIcons.idCard, () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => YourProfileScreen()));
+                  MaterialPageRoute(builder: (context) => UserDetails()));
             }),
             MyListTile("Account information", FontAwesomeIcons.piggyBank, () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => YourAccountDetailsScreen()));
+                  MaterialPageRoute(builder: (context) => UserAccountDetails()));
             }),
             SizedBox(height: 20.0),
             SectionTitle("Security"),

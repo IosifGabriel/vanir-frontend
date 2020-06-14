@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:vanir_app/services/transactions_service.dart';
 import 'package:vanir_app/widgets/account/avatar.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
+import 'package:vanir_app/widgets/error.dart';
+import 'package:vanir_app/widgets/loader.dart';
 import 'package:vanir_app/widgets/payments/qr_code_widget.dart';
+import 'package:vanir_app/widgets/success.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 import 'package:vanir_app/widgets/custom_button.dart';
 
@@ -13,6 +18,7 @@ class PaymentsTab extends StatefulWidget {
 }
 
 class PaymentsTabState extends State<PaymentsTab> {
+  TextEditingController amountController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
@@ -50,12 +56,45 @@ class PaymentsTabState extends State<PaymentsTab> {
         SizedBox(height: 10.0),
         Text(userId, style: TextStyle(fontSize: 16.0)),
         SizedBox(height: 20.0),
+        TextField(
+                  controller : amountController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter(RegExp(r"[\d.]")),
+                    ],
+                    decoration: InputDecoration(
+                      labelText: "Enter amount",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 2.0,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
         CustomButton(
           "Confirm payment",
-          () {
-            print("TODO pay");
-          },
-        ),
+          () async {
+              var result =
+                  await _send(context, userId ,double.parse(amountController.text));
+              if (result) {
+                Future.delayed(
+                    Duration(
+                      seconds: 2,
+                      milliseconds: 250,
+                    ),
+                    () => Navigator.pop(context));
+                  };
+              }
+          ),
         FlatButton(
           child: Text("Cancel"),
           onPressed: () => Navigator.pop(context),
@@ -63,4 +102,26 @@ class PaymentsTabState extends State<PaymentsTab> {
       ],
     );
   }
+
+   Future<bool> _send(BuildContext context, String id, double amount) async {
+    var confirmed = TransactionsService.send(id, amount);
+    showDialog(
+      context: context,
+      child: CustomDialog.fromWidget(FutureBuilder<bool>(
+        future: confirmed,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            Future.delayed(Duration(seconds: 2), () => Navigator.pop(context));
+            if (snapshot.data == false) return ErrorView();
+            return SuccessView();
+          } else if (snapshot.hasError) {
+            return ErrorView();
+          }
+          return Loader();
+        },
+      )),
+    );
+    return confirmed;
+  }
+  
 }
