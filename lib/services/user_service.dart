@@ -98,4 +98,29 @@ class UserService {
     });
     return result;
   }
+
+
+static Future<bool> send(String idReceiver, double amount) async {
+  var result = false;
+  var id = await AppContext.loggedUserId();
+  await http.
+      post('$_url/transactions',
+              headers:{
+                "accept":"application/json",
+                "content-type":"application/json",
+                "id": id
+              },
+              body: jsonEncode(<String, dynamic>{
+              'recipientId': idReceiver,
+              'amount': amount,
+            }))
+              .then((response) {
+      if (response.statusCode == 200) result = true;
+    }).catchError((e) {
+      print('Send error: $e');
+    });
+    return result;
+  }
 }
+
+
