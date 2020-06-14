@@ -9,7 +9,16 @@ import 'package:vanir_app/widgets/loader.dart';
 import 'package:vanir_app/widgets/success.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 
-class AddNewCard extends StatelessWidget {
+class AddNewCard extends StatefulWidget {
+  final Function callback;
+
+  AddNewCard({this.callback});
+
+  @override
+  _AddNewCardState createState() => _AddNewCardState();
+}
+
+class _AddNewCardState extends State<AddNewCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +49,7 @@ class AddNewCard extends StatelessWidget {
             CustomButton("Confirm", () async {
               var result = await _addNewCard(context);
               if (result) {
+                widget.callback();
                 Future.delayed(
                     Duration(
                       seconds: 2,

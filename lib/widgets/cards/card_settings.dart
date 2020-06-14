@@ -8,8 +8,9 @@ import 'package:vanir_app/widgets/success.dart';
 
 class CardSettings extends StatelessWidget {
   final int cardId;
+  final Function callback;
 
-  CardSettings(this.cardId);
+  CardSettings(this.cardId, {this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,12 @@ class CardSettings extends StatelessWidget {
                 var result = await _deleteCard(context, cardId);
                 if (result) {
                   Future.delayed(
-                      Duration(
-                        seconds: 2,
-                        milliseconds: 250,
-                      ),
-                      () => Navigator.pop(context));
+                    Duration(seconds: 2, milliseconds: 250),
+                    () {
+                      Navigator.pop(context);
+                      callback();
+                    },
+                  );
                 }
               },
             ),
@@ -55,7 +57,9 @@ class CardSettings extends StatelessWidget {
         future: confirmed,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            Future.delayed(Duration(seconds: 2), () => Navigator.pop(context));
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.pop(context);
+            });
             if (snapshot.data == false) return ErrorView();
             return SuccessView();
           } else if (snapshot.hasError) {

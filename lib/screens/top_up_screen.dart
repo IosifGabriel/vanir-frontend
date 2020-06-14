@@ -9,6 +9,10 @@ import 'package:vanir_app/widgets/success.dart';
 import 'package:vanir_app/widgets/tab_title.dart';
 
 class TopUpScreen extends StatefulWidget {
+  final Function callback;
+
+  TopUpScreen({this.callback});
+
   @override
   _TopUpScreenState createState() => _TopUpScreenState();
 }
@@ -62,6 +66,7 @@ class _TopUpScreenState extends State<TopUpScreen> {
               var result =
                   await _topup(context, double.parse(amountController.text));
               if (result) {
+                widget.callback();
                 Future.delayed(
                     Duration(
                       seconds: 2,
