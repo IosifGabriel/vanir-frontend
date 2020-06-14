@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vanir_app/services/user_service.dart';
+import 'package:vanir_app/services/transactions_service.dart';
 import 'package:vanir_app/widgets/account/avatar.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
 import 'package:vanir_app/widgets/error.dart';
@@ -19,7 +19,6 @@ class PaymentsTab extends StatefulWidget {
 
 class PaymentsTabState extends State<PaymentsTab> {
   TextEditingController amountController = new TextEditingController();
-  var scanContent = "";
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
@@ -39,7 +38,7 @@ class PaymentsTabState extends State<PaymentsTab> {
   Future _scanQRCode() async {
     try {
       var scanResult = await BarcodeScanner.scan();
-      scanContent = scanResult.rawContent;
+      var scanContent = scanResult.rawContent;
       if (scanContent != "")
         showDialog(
           context: context,
@@ -85,7 +84,7 @@ class PaymentsTabState extends State<PaymentsTab> {
           "Confirm payment",
           () async {
               var result =
-                  await _send(context, scanContent ,double.parse(amountController.text));
+                  await _send(context, userId ,double.parse(amountController.text));
               if (result) {
                 Future.delayed(
                     Duration(
@@ -105,7 +104,7 @@ class PaymentsTabState extends State<PaymentsTab> {
   }
 
    Future<bool> _send(BuildContext context, String id, double amount) async {
-    var confirmed = UserService.send(id, amount);
+    var confirmed = TransactionsService.send(id, amount);
     showDialog(
       context: context,
       child: CustomDialog.fromWidget(FutureBuilder<bool>(
