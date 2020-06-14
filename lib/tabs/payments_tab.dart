@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:vanir_app/services/transactions_service.dart';
 import 'package:vanir_app/widgets/account/avatar.dart';
 import 'package:vanir_app/widgets/custom_dialog.dart';
+import 'package:vanir_app/widgets/custom_input.dart';
 import 'package:vanir_app/widgets/error.dart';
 import 'package:vanir_app/widgets/loader.dart';
 import 'package:vanir_app/widgets/payments/qr_code_widget.dart';
@@ -53,48 +54,35 @@ class PaymentsTabState extends State<PaymentsTab> {
     return Column(
       children: <Widget>[
         Text("Pay", style: TextStyle(fontSize: 20.0)),
-        SizedBox(height: 10.0),
-        Text(userId, style: TextStyle(fontSize: 16.0)),
         SizedBox(height: 20.0),
-        TextField(
-                  controller : amountController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter(RegExp(r"[\d.]")),
-                    ],
-                    decoration: InputDecoration(
-                      labelText: "Enter amount",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 2.0,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                  ),
+        Text(
+          "Please enter the amount you want to send",
+          style: TextStyle(fontSize: 16.0),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 20.0),
+        CustomInput(
+          "Amount",
+          amountController,
+          inverted: false,
+          keyboardType: TextInputType.number,
+        ),
+        SizedBox(height: 20.0),
         CustomButton(
           "Confirm payment",
           () async {
-              var result =
-                  await _send(context, userId ,double.parse(amountController.text));
-              if (result) {
-                Future.delayed(
-                    Duration(
-                      seconds: 2,
-                      milliseconds: 250,
-                    ),
-                    () => Navigator.pop(context));
-                  };
-              }
-          ),
+            var result = await _send(
+                context, userId, double.parse(amountController.text));
+            if (result) {
+              Future.delayed(
+                  Duration(
+                    seconds: 2,
+                    milliseconds: 250,
+                  ),
+                  () => Navigator.pop(context));
+            }
+          },
+        ),
         FlatButton(
           child: Text("Cancel"),
           onPressed: () => Navigator.pop(context),
@@ -103,7 +91,7 @@ class PaymentsTabState extends State<PaymentsTab> {
     );
   }
 
-   Future<bool> _send(BuildContext context, String id, double amount) async {
+  Future<bool> _send(BuildContext context, String id, double amount) async {
     var confirmed = TransactionsService.send(id, amount);
     showDialog(
       context: context,
@@ -123,5 +111,4 @@ class PaymentsTabState extends State<PaymentsTab> {
     );
     return confirmed;
   }
-  
 }
