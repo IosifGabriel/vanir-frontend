@@ -21,15 +21,20 @@ In principiu pentru fiecare task am creat un feature cu numele taskului si dupa 
 
 Am creat 5 teste automate dintre care 3 sunt pentru integrare si 2 unitare. Testele de integrare au vizat functionalitatea din controllere, iar testele unitare au verificat functiile utilitare folosite in layerul cu baza de date.
 
-TODO links
+- [Integration tests](https://github.com/alexjilavu/vanir-backend/tree/master/src/test/java/com/jimaio/vanir/test/integration)
+- [Unit tests](https://github.com/alexjilavu/vanir-backend/tree/master/src/test/java/com/jimaio/vanir/test/unit)
 
 ## Bug reporting
 
-TODO links
+Am raportat bug-urile in  `AzureDevops` si am creat commituri pentru rezolvarea acestora.
+
+- [Bug topup](https://github.com/alexjilavu/vanir-backend/commit/045fc5f4a1b4bb5f16de2dc21e4626186c0f9e06)
+- [Bug page reload](https://github.com/alexjilavu/vanir-frontend/commit/53b86ffd3b8ff6802efe48b5642d0316d1b897fd)
+- [Bug QR code](https://github.com/alexjilavu/vanir-frontend/commit/73cf764fac9ac4ba56edb42b8b633434703f4cf0)
 
 ## Folosirea unui build tool
 
-Pentru partea de backend am folosit Maven (TODO link).
+Pentru partea de backend am folosit [Maven](https://github.com/alexjilavu/vanir-backend/blob/master/pom.xml).
 
 ## Refactoring, code standards
 
