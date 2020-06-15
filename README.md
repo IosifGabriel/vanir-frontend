@@ -43,3 +43,7 @@ Codurile pentru backend si frontend respecta standardele Java, respectiv Flutter
 ## Design patterns
 
 Structura aplicatiei respecta standardele `Maven` si `Spring`, iar desing patternul folosit este `Domain Driven Design`
+
+## DEMO
+
+https://www.youtube.com/watch?v=ky_Wi8Ko2lM&feature=youtu.be&fbclid=IwAR3QvYtfI6AH079lHKQiLLhrcrz5RGZazyZnCB_KUeVdHdIAWcHNRMJS8ZQ
